@@ -2,6 +2,11 @@
 
 pyCOMPASSR is a R wrapper to the python library pyCOMPASS which allows querying COMPASS (COMpendia Programmatic Access Support Software) a software layer that provides a GraphQL endpoint to query compendia built using COMMAND>_ technology.
 
+## Build Status
+
+[![Travis-CI Build
+Status](https://travis-ci.com/onertipaday/pyCOMPASSR.svg?branch=master)](https://travis-ci.com/onertipaday/pyCOMPASSR)
+
 # Installation
 
 ## 1. Install `python` and `pip`
