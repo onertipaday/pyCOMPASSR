@@ -75,6 +75,11 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#pycompassr" class="anchor"></a>pyCOMPASSR</h1></div>
 <p>pyCOMPASSR is a R wrapper to the python library pyCOMPASS which allows querying COMPASS (COMpendia Programmatic Access Support Software) a software layer that provides a GraphQL endpoint to query compendia built using COMMAND&gt;_ technology.</p>
+<div id="build-status" class="section level2">
+<h2 class="hasAnchor">
+<a href="#build-status" class="anchor"></a>Build Status</h2>
+<p><a href="https://travis-ci.com/onertipaday/pyCOMPASSR"><img src="https://travis-ci.com/onertipaday/pyCOMPASSR.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://github.com/metacran/cranlogs.app"><img src="http://cranlogs.r-pkg.org/badges/pyCOMPASSR" alt="rstudio mirror downloads"></a> <a href="https://github.com/metacran/cranlogs.app"><img src="http://cranlogs.r-pkg.org/badges/grand-total/pyCOMPASSR" alt="rstudio mirror downloads"></a></p>
+</div>
 </div>
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
@@ -142,7 +147,7 @@ print(vv_compendium$description)</code></pre>
 <p>A module is a matrix that represent a portion of genes and a portion of conditions of the whole compendium. Let’s see its values.</p>
 <pre class="{r}"><code>mod1$compendium$compendium_full_name
 mod1$values</code></pre>
-<p>Now we will plot the heatmap for this module using the Plot object. The plot_heatmap method will return normal HTML + Javascript code so since we are using a web-browser to display thing we will just need to tell Jupyter to interpret the HTML + Javascript code for us¶</p>
+<p>Now we will plot the heatmap for this module using the Plot object. The plot_heatmap method will return normal HTML + Javascript code. We can use RStudio viewer to visualize the html.</p>
 <pre class="{r}"><code>my_plot_html &lt;- plot_heatmap(mod1)
 tempDir &lt;- tempfile()
 dir.create(tempDir)
@@ -154,7 +159,7 @@ rstudioapi::viewer(htmlFile)</code></pre>
 <h1 class="hasAnchor">
 <a href="#package-maintainers--authors" class="anchor"></a>Package maintainers / authors</h1>
 <p>pyCOMPASS is written and mantained by <a href="https://github.com/marcomoretto/pyCOMPASS">MarcoMoretto</a>.</p>
-<p>pyCOMPASSR is written and maintained by <a href="https://github.com/onertipaday">Paolo Sonego</a><a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&amp;logo=twitter" alt="follow on Twitter"></a>.</p>
+<p>pyCOMPASSR is written and maintained by <a href="https://github.com/onertipaday/pyCOMPASSR">Paolo Sonego</a> <a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&amp;logo=twitter" alt="follow on Twitter"></a>.</p>
 </div>
 
   </div>
@@ -176,8 +181,7 @@ rstudioapi::viewer(htmlFile)</code></pre>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Marco Moretto <br><small class="roles"> Author </small>  </li>
-<li>Paolo Sonego <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Paolo Sonego <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/http://orcid.org/0000-0002-8576-0169" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
 </ul>
 </div>
 
@@ -186,7 +190,7 @@ rstudioapi::viewer(htmlFile)</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Marco Moretto, Paolo Sonego.</p>
+  <p>Developed by Paolo Sonego.</p>
 </div>
 
 <div class="pkgdown">
