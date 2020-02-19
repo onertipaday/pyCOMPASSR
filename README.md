@@ -6,6 +6,8 @@ pyCOMPASSR is a R wrapper to the python library pyCOMPASS which allows querying 
 
 [![Travis-CI Build
 Status](https://travis-ci.com/onertipaday/pyCOMPASSR.svg?branch=master)](https://travis-ci.com/onertipaday/pyCOMPASSR)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/pyCOMPASSR)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/pyCOMPASSR)](https://github.com/metacran/cranlogs.app)
 
 # Installation
 
@@ -121,7 +123,7 @@ A module is a matrix that represent a portion of genes and a portion of conditio
 mod1$compendium$compendium_full_name
 mod1$values
 ```
-Now we will plot the heatmap for this module using the Plot object. The plot_heatmap method will return normal HTML + Javascript code so since we are using a web-browser to display thing we will just need to tell Jupyter to interpret the HTML + Javascript code for us¶
+Now we will plot the heatmap for this module using the Plot object. The plot_heatmap method will return normal HTML + Javascript code. We can use RStudio viewer to visualize the html.
 ```{r}
 my_plot_html <- plot_heatmap(mod1)
 tempDir <- tempfile()
@@ -134,6 +136,6 @@ rstudioapi::viewer(htmlFile)
 
 pyCOMPASS is written and mantained by [MarcoMoretto](https://github.com/marcomoretto/pyCOMPASS).
 
-pyCOMPASSR is written and maintained by [Paolo Sonego](https://github.com/onertipaday)<a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&logo=twitter" alt="follow on Twitter"></a>.
+pyCOMPASSR is written and maintained by [Paolo Sonego](https://github.com/onertipaday/pyCOMPASSR) <a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&logo=twitter" alt="follow on Twitter"></a>.
 
 

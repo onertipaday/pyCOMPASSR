@@ -1,10 +1,10 @@
 Package: pyCOMPASSR
 Title: API to 'Python' Library 'pyCOMPASS'
 Version: 0.0.1
-Authors@R: as.person(c(
-    "Marco Moretto <marco.moretto@fmach.it> [aut]", 
-    "Paolo Sonego <paolo.sonego@fmach.it> [aut, cre]"
-  ))
+Authors@R: person("Paolo Sonego",
+                role = c("aut", "cre"),
+                email = "paolo.sonego@fmach.it",
+                comment = c(ORCID = "http://orcid.org/0000-0002-8576-0169"))
 URL: https://github.com/onertipaday/pyCOMPASSR
 Maintainer: Paolo Sonego <paolo.sonego@gmail.com>
 Description: Using the R package 'reticulate', this package creates an interface to the 'pyCOMPASS' python library.
