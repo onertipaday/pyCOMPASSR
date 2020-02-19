@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{plot_distribution}
 \alias{plot_distribution}
-\title{plot biological_features_standard_deviation_distribution}
+\title{Get the HTML or JSON code that plot module distributions}
 \usage{
 plot_distribution(module)
 }
@@ -13,11 +13,13 @@ plot_distribution(module)
 a "xml_document"
 }
 \description{
-plot biological_features_standard_deviation_distribution
+Get the HTML or JSON code that plot module distributions
 }
 \examples{
 \dontrun{
-mod1 <- create_module(get_connection()$vv_compendium, genes)
+gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
+genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
+mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 my_plot_dist <- plot_distribution(mod1)
 }
 }

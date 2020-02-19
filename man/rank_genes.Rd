@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{rank_genes}
 \alias{rank_genes}
-\title{rank genes}
+\title{Rank all biological features on the module’s sample set using rank_method}
 \usage{
 rank_genes(compendium = get_compendium(), module, rank_method = "std")
 }
@@ -17,7 +17,7 @@ rank_genes(compendium = get_compendium(), module, rank_method = "std")
 a data.frame
 }
 \description{
-rank genes
+Rank all biological features on the module’s sample set using rank_method
 }
 \examples{
  \dontrun{

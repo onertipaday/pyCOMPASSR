@@ -18,6 +18,9 @@ def plot_heatmap(module):
 def plot_distribution(module): 
   return Plot(module).plot_distribution(plot_type='biological_features_standard_deviation_distribution')
   
+def plot_network(module): 
+  return Plot(module).plot_network()
+  
 # Non funzionano! -------------------------------------------------------------
 # def save_module(module, filename='module.vsp'):
 #   return module.write_to_file(filename)

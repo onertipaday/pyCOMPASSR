@@ -2,20 +2,20 @@
 % Please edit documentation in R/functions.R
 \name{get_platform_types}
 \alias{get_platform_types}
-\title{get_platform_types}
+\title{Get the platform types}
 \usage{
-get_platform_types(conn = get_connection())
+get_platform_types(compendium = get_compendium())
 }
 \arguments{
-\item{conn}{a <pycompass.compendium.Compendium> object}
+\item{compendium}{the compendium selected for the analysis}
 }
 \value{
 a data.frame
 }
 \description{
-get_platform_types
+Get the platform types
 }
 \examples{
-my_conn <- get_connection()
-get_platform_types(conn = my_conn)
+vv_compendium <- get_compendium()
+get_platform_types(compendium = vv_compendium)
 }

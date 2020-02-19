@@ -1,65 +1,51 @@
-#' Connect to a COMPASS GraphQL endpoint
+#' Get a compendium by a given name, None otherwise
 #'
-#' @param url a string: the current url for compass graphql API
-#'
-#' @return a <pycompass.compendium.Compendium> object
-#' @export
-#'
-#' @examples
-#' conn=get_connection(url = 'http://compass.fmach.it/graphql')
-get_connection <- function(url = 'http://compass.fmach.it/graphql'){
-  .check_pycompass()
-  # connection <- reticulate::py_run_file(system.file("python", "connect.py", package = "pyCOMPASSR"))
-  #pycompass <- reticulate::import("pycompass")
-  #pycompass$Connect(url)$get_compendia()[[1]]
-  .pycompass$Connect(url)$get_compendia()[[1]]
-}
-
-#' get_compendium
-#'
-#' @description Get a compendium by a given name, NULL otherwise
-#'
+#' @param url a string: the current url for compass GraphQL endpoint
 #' @param species a string ('vitis_vinifera')
 #'
 #' @return a <pycompass.compendium.Compendium> object
 #' @export
 #'
 #' @examples
-get_compendium <- function(species='vitis_vinifera'){
-  get_connection(url = 'http://compass.fmach.it/graphql')$connection$get_compendium(species)
+#' vv_compendium <- get_compendium()
+get_compendium <- function(url = 'http://compass.fmach.it/graphql', species='vitis_vinifera'){
+  .check_pycompass()
+  .pycompass$Connect(url)$get_compendia()[[1]]$connection$get_compendium(species)
 }
 
-
-#' get_platform_types
+#' Get the platform types
 #'
-#' @param conn a <pycompass.compendium.Compendium> object
+#' @param compendium the compendium selected for the analysis
 #'
 #' @return a data.frame
 #' @export
 #'
 #' @examples
-#' my_conn <- get_connection()
-#' get_platform_types(conn = my_conn)
-get_platform_types <- function(conn = get_connection()){
-#  data.frame(t(sapply(get_compendium()$get_platform_types(),unlist)))
-  data.frame(t(sapply(conn$get_platform_types(),unlist)))
+#' vv_compendium <- get_compendium()
+#' get_platform_types(compendium = vv_compendium)
+get_platform_types <- function(compendium = get_compendium()){
+  data.frame(t(sapply(compendium$get_platform_types(),unlist)))
+  # data.frame(t(sapply(get_compendium()$get_platform_types(),unlist)))
+  #data.frame(t(sapply(conn$get_platform_types(),unlist)))
 }
 
-#' get_data_sources
+#' Get the experiments data sources both local and public
 #'
-#' @param conn a <pycompass.compendium.Compendium> object
+#' @param compendium the compendium selected for the analysis
 #'
 #' @return a data.frame
 #' @export
 #'
 #' @examples
-#' my_conn <- get_connection()
-#' get_data_sources(conn = my_conn)
-get_data_sources <- function(conn = get_connection()){
-  data.frame(t(sapply(conn$get_data_sources(),unlist)))
+#' vv_compendium <- get_compendium()
+#' get_data_sources(compendium = vv_compendium)
+get_data_sources <- function(compendium = get_compendium()){
+  data.frame(t(sapply(compendium$get_data_sources(),unlist)))
+  # data.frame(t(sapply(get_compendium()$get_data_sources(),unlist)))
+  # data.frame(t(sapply(conn$get_data_sources(),unlist)))
 }
 
-#' rank genes
+#' Rank all biological features on the module’s sample set using rank_method
 #'
 #' @param compendium the compendium selected for the analysis
 #' @param module a "pycompass.module.Module"
@@ -76,20 +62,8 @@ rank_genes <- function(compendium = get_compendium(), module, rank_method = "std
   as.data.frame(compendium$rank_biological_features(module, rank_method)$ranking)
 }
 
-# get_biological_features <- function(conn = get_connection(), genes = gene_names){
-#   pycompass <- reticulate::import("pycompass")
-#   vv_compendium <- conn$connection$get_compendium('vitis_vinifera')
-#   # genes = BiologicalFeature.using(vv_compendium).get(filter={'name_In': gene_names})
-#   my_filter <- reticulate::dict(keys = 'name_In', values = as.list(gene_names))
-#   bf <-  pycompass$BiologicalFeature$using(vv_compendium)
-#   genes <- bf$get(filter = my_filter)
-#   genes
-# }
 
-## Using python scripts
-
-
-#' get_bf
+#' Get biological feature
 #'
 #' @param compendium the compendium selected for the analysis
 #' @param gene_names a vector of gene_ids
@@ -99,10 +73,8 @@ rank_genes <- function(compendium = get_compendium(), module, rank_method = "std
 #'
 #' @examples
 #' \dontrun{
-#' my_conn <- get_connection(url = 'http://compass.fmach.it/graphql')
-#' vv_compendium <- my_conn$connection$get_compendium('vitis_vinifera')
 #' gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
-#' genes <- get_bf(compendium = vv_compendium, gene_names = as.list(gene_names))
+#' genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
 #' }
 get_bf <- function(compendium, gene_names){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
@@ -111,7 +83,7 @@ get_bf <- function(compendium, gene_names){
   #junk=.pycompass$BiologicalFeature$using(vv_compendium)$get(filter = )
 }
 
-#' create_module
+#' Create a new module
 #'
 #' @param compendium the compendium selected for the analysis
 #' @param biofeatures a list of <pycompass.biological_feature.BiologicalFeature> objects from get_bf
@@ -121,7 +93,9 @@ get_bf <- function(compendium, gene_names){
 #'
 #' @examples
 #' \dontrun{
-#' mod1 <- create_module(compendium = get_connection()$vv_compendium, biofeatures = genes)
+#' gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
+#' genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
+#' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' }
 create_module <- function(compendium, biofeatures){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
@@ -130,7 +104,7 @@ create_module <- function(compendium, biofeatures){
   # return(my_module$values)
 }
 
-#' Title
+#' Add biological feature to the module
 #'
 #' @param compendium the compendium selected for the analysis
 #' @param module a "pycompass.module.Module"
@@ -145,22 +119,7 @@ add_module <- function(compendium, module, new_genes){
   return(add_module(compendium, module, new_genes))
 }
 
-# -----------------------------------------------------------------------------
-# NON FUNZIONANO!!!
-# save_module <- function(module, filename = "module.vsp"){
-#   .check_pycompass()
-#   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
-#   save_module(module, filename)
-# }
-#
-# load_module <- function(filename = "module.vsp", connection){
-#   .check_pycompass()
-#   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
-#   load_module(filename, connection)
-# }
-# -----------------------------------------------------------------------------
-
-#' plot_heatmap
+#' Get the HTML or JSON code that plot module heatmaps
 #'
 #' @param module a "pycompass.module.Module"
 #'
@@ -169,7 +128,9 @@ add_module <- function(compendium, module, new_genes){
 #'
 #' @examples
 #' \dontrun{
-#' mod1 <- create_module(get_connection()$vv_compendium, genes)
+#' gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
+#' genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
+#' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' my_html <- plot_heatmap(mod1)
 #' }
 plot_heatmap <- function(module){
@@ -179,7 +140,7 @@ plot_heatmap <- function(module){
   # return(plot_heatmap(module))
 }
 
-#' plot biological_features_standard_deviation_distribution
+#' Get the HTML or JSON code that plot module distributions
 #'
 #' @param module a "pycompass.module.Module"
 #'
@@ -188,12 +149,34 @@ plot_heatmap <- function(module){
 #'
 #' @examples
 #' \dontrun{
-#' mod1 <- create_module(get_connection()$vv_compendium, genes)
+#' gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
+#' genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
+#' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' my_plot_dist <- plot_distribution(mod1)
 #' }
 plot_distribution <- function(module){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
   return(xml2::read_html(plot_distribution(module)))
+}
+
+
+#' Get the HTML or JSON code that plot the module networks
+#'
+#' @param module a "pycompass.module.Module"
+#'
+#' @return  a "xml_document"
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
+#' genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
+#' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
+#' my_plot_net <- plot_network(mod1)
+#' }
+plot_network <- function(module){
+  reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
+  return(xml2::read_html(plot_network(module)))
 }
 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{create_module}
 \alias{create_module}
-\title{create_module}
+\title{Create a new module}
 \usage{
 create_module(compendium, biofeatures)
 }
@@ -15,10 +15,12 @@ create_module(compendium, biofeatures)
 a "pycompass.module.Module"
 }
 \description{
-create_module
+Create a new module
 }
 \examples{
 \dontrun{
-mod1 <- create_module(compendium = get_connection()$vv_compendium, biofeatures = genes)
+gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
+genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
+mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 }
 }

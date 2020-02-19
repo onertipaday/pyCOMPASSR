@@ -2,8 +2,8 @@ Package: pyCOMPASSR
 Title: API to 'Python' Library 'pyCOMPASS'
 Version: 0.0.1
 Authors@R: as.person(c(
-    "Marco Moretto <marco.moretto@fmach.it> [aut, cre]", 
-    "Paolo Sonego <paolo.sonego@fmach.it> [aut]"
+    "Marco Moretto <marco.moretto@fmach.it> [aut]", 
+    "Paolo Sonego <paolo.sonego@fmach.it> [aut, cre]"
   ))
 URL: https://github.com/onertipaday/pyCOMPASSR
 Maintainer: Paolo Sonego <paolo.sonego@gmail.com>

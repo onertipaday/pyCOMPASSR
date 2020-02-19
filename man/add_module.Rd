@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{add_module}
 \alias{add_module}
-\title{Title}
+\title{Add biological feature to the module}
 \usage{
 add_module(compendium, module, new_genes)
 }
@@ -17,5 +17,5 @@ add_module(compendium, module, new_genes)
 a "pycompass.module.Module"
 }
 \description{
-Title
+Add biological feature to the module
 }

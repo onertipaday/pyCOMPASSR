@@ -2,20 +2,20 @@
 % Please edit documentation in R/functions.R
 \name{get_data_sources}
 \alias{get_data_sources}
-\title{get_data_sources}
+\title{Get the experiments data sources both local and public}
 \usage{
-get_data_sources(conn = get_connection())
+get_data_sources(compendium = get_compendium())
 }
 \arguments{
-\item{conn}{a <pycompass.compendium.Compendium> object}
+\item{compendium}{the compendium selected for the analysis}
 }
 \value{
 a data.frame
 }
 \description{
-get_data_sources
+Get the experiments data sources both local and public
 }
 \examples{
-my_conn <- get_connection()
-get_data_sources(conn = my_conn)
+vv_compendium <- get_compendium()
+get_data_sources(compendium = vv_compendium)
 }

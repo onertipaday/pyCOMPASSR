@@ -2,16 +2,24 @@
 % Please edit documentation in R/functions.R
 \name{get_compendium}
 \alias{get_compendium}
-\title{get_compendium}
+\title{Get a compendium by a given name, None otherwise}
 \usage{
-get_compendium(species = "vitis_vinifera")
+get_compendium(
+  url = "http://compass.fmach.it/graphql",
+  species = "vitis_vinifera"
+)
 }
 \arguments{
+\item{url}{a string: the current url for compass GraphQL endpoint}
+
 \item{species}{a string ('vitis_vinifera')}
 }
 \value{
 a <pycompass.compendium.Compendium> object
 }
 \description{
-Get a compendium by a given name, NULL otherwise
+Get a compendium by a given name, None otherwise
+}
+\examples{
+vv_compendium <- get_compendium()
 }

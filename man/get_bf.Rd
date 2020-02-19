@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{get_bf}
 \alias{get_bf}
-\title{get_bf}
+\title{Get biological feature}
 \usage{
 get_bf(compendium, gene_names)
 }
@@ -15,13 +15,11 @@ get_bf(compendium, gene_names)
 a list of <pycompass.biological_feature.BiologicalFeature> objects
 }
 \description{
-get_bf
+Get biological feature
 }
 \examples{
 \dontrun{
-my_conn <- get_connection(url = 'http://compass.fmach.it/graphql')
-vv_compendium <- my_conn$connection$get_compendium('vitis_vinifera')
 gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840')
-genes <- get_bf(compendium = vv_compendium, gene_names = as.list(gene_names))
+genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
 }
 }
