@@ -1,0 +1,143 @@
+---
+title: 'Methada 2020: VESPUCCI exercise n° 1'
+author: "Paolo Sonego"
+date: "2/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Methada 2020: VESPUCCI exercise n° 1
+
+In this first excercise we will perform few basic operations with VESPUCCI. We will create a Module starting from few genes and then automatically extend it by adding more genes. We will have a look at gene and samples annotations. VESPUCCI is the gene expression database for grapevine and we can access it via its GraphQL interface, called COMPASS. The pyCOMPASS package is a Python package that wraps some functionalities to simplify communication with the COMPASS intereface.
+
+```{r}
+library(pyCOMPASSR)
+```
+
+Create a Connect object and pass it the URL to point it to the COMPASS GraphQL endpoint
+```{r}
+my_conn <- get_connection(url = 'http://compass.fmach.it/graphql')
+```
+
+Since COMPASS is our interface to (possibily) many compendium, we'll list all of them and select the one we are interested in, i.e. VITIS_VINIFERA
+```{r}
+vv_compendium <- get_compendium(species = 'vitis_vinifera')
+# vv_compendium <- my_conn$connection$get_compendium('vitis_vinifera')
+```
+
+Let's print out the description for this compendium
+```{r}
+print(vv_compendium$description)
+```
+
+Let's build our module starting from a bunch of top ranking genes from your previous excercise (contrast different cultivars)
+```{r}
+gene_names <-c('VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840','VIT_01s0026g00520','VIT_03s0017g02170','VIT_19s0014g05330','VIT_02s0154g00130','VIT_02s0025g04330','VIT_13s0067g00490','VIT_09s0002g01200','VIT_14s0030g00140','VIT_03s0063g00120','VIT_05s0029g01480','VIT_11s0052g01650','VIT_02s0087g01020','VIT_09s0070g00160','VIT_13s0019g02180','VIT_07s0095g00550','VIT_04s0008g06570','VIT_04s0069g00860','VIT_04s0210g00060','VIT_07s0104g00430','VIT_15s0107g00210','VIT_16s0039g00970','VIT_10s0003g01730','VIT_17s0000g07060','VIT_16s0100g00510','VIT_02s0154g00590')
+```
+
+We can query the compendium with the list of gene names and get a list of BiologicalFeature objects that represents our genes of interest.
+
+```{r}
+genes <- get_bf(compendium = vv_compendium, gene_names = as.list(gene_names))
+```
+
+
+We are now ready to create our first module: the compendium will need the list of genes (BiologicalFeature objects) and the name of the normalization we want to use in order to automatically select the "best" conditions.¶
+
+```{r}
+mod1 <- create_module(compendium = vv_compendium, biofeatures = genes)
+```
+
+Since the module creation process might take few moments we will read it from a file I previously prepared. I commented the code used to create the module and save it to a local file.
+
+```{r}
+# save_module(mod1, filename = 'test1.vsp')
+# mod1 <- load_module(filename = 'test1.vsp')
+```
+
+A module is a matrix that represent a portion of genes and a portion of conditions of the whole compendium. Let's see its values.
+
+```{r}
+mod1$compendium$compendium_full_name
+mod1$values
+```
+Now we will plot the heatmap for this module using the Plot object. The plot_heatmap method will return normal HTML + Javascript code so since we are using a web-browser to display thing we will just need to tell Jupyter to interpret the HTML + Javascript code for us¶
+```{r}
+my_plot_html <- plot_heatmap(mod1)
+```
+
+see [Extending RStudio with the Viewer Pane](https://support.rstudio.com/hc/en-us/articles/202133558-Extending-RStudio-with-the-Viewer-Pane)
+
+```{r}
+tempDir <- tempfile()
+dir.create(tempDir)
+htmlFile <- file.path(tempDir, "plot_heatmap.html")
+write_html(my_plot_html,file=htmlFile)
+rstudioapi::viewer(htmlFile)
+```
+Or use heatmaply directly from R:
+```{r}
+# plotly::plot_ly(z=mod1$values,type="heatmap")
+heatmaply::heatmaply_cor(mod1$values,
+              showticklabels = FALSE,
+              xlab = "Sample Sets",
+              ylab = "Biological Features",
+              k_col = 6,
+              k_row = 3#, show_dendrogram=F
+          )
+```
+One basic functionality users usually want to explore is to find other genes (not part of the initial query) that show an expression pattern similar to the initial query genes for the same conditions. We can rank BiologicalFeatures or SampleSets based on different scores. The way to do rank BiologicalFeature is first to plot the BiologicalFeature distribution and then select a cut-off based on the co-expression.
+```{r}
+vv_compendium$normalization$legacy
+```
+```{r}
+my_plot_dist <- plot_distribution(mod1)
+tempDir <- tempfile()
+dir.create(tempDir)
+htmlFile <- file.path(tempDir, "test.html")
+write_html(my_plot_dist,file=htmlFile)
+rstudioapi::viewer(htmlFile)
+```
+
+Let's create a copy of our module by reading again the module_1 file
+```{r}
+mod2 <- mod1
+mod2$values
+#module_2 = Module.read_from_file('module_1.vsp', conn)
+#module_2.values
+```
+
+
+Now that we saw the plot, let's create a rank of the BiologicalFeature
+```{r}
+# rank_genes <- vv_compendium$rank_biological_features(mod1, rank_method = "std")
+ranked_genes <- rank_genes(module = mod1)
+head(ranked_genes)
+```
+And pick the 10 best genes
+```{r}
+# new_gene_names = ranked_genes['ranking']['id'][:10]
+new_gene_names = ranked_genes$name[1:10]
+# new_genes = BiologicalFeature.using(vv_compendium).get(filter={'id_In': new_gene_names})
+new_genes <- get_bf(compendium = vv_compendium, gene_names = as.list(new_gene_names))
+```
+To add to the second module
+```{r}
+#module_2.add_biological_features(new_genes)
+mod2 <- add_module(compendium = vv_compendium, module = mod2, new_genes = new_genes)
+```
+And then plot the newly created module
+```{r}
+my_plot_html2 <- plot_heatmap(mod2)
+```
+By making the difference between the two modules, fixed by SampleSets (that are the same between modules), we can see just what we added
+```{r}
+#module_3 = Module.difference(module_2, module_1, sample_sets=False)
+#html_hm_module_3 = Plot(module_3).plot_heatmap()
+#my_plot_html3 <- plot_heatmap(mod3)
+```
+
+

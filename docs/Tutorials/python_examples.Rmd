@@ -1,0 +1,201 @@
+---
+title: "Python test"
+author: "Paolo Sonego"
+date: "2/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Examples
+Here you can find a collection of random examples.
+
+## Connect
+
+Connect to a COMPASS GraphQL endpoint and retrieve all available compendium as a list of Compendium objects
+
+```{python}
+from pycompass import Connect, Compendium, Module, Sample, Platform, Experiment, Ontology, SampleSet, BiologicalFeature, Module
+
+url = 'http://compass.fmach.it/graphql'
+conn = Connect(url)
+compendia = conn.get_compendia()
+```
+
+```{python}
+vv_compendium = None
+for compendium in conn.get_compendia():
+    if compendium.compendium_name == 'vitis_vinifera':
+        vv_compendium = compendium
+        break
+```
+
+```{python}
+print(vv_compendium.description)
+```
+
+```{python}
+gene_names = ['VIT_05s0094g00350','VIT_07s0031g02630','VIT_19s0015g02480','VIT_08s0007g08840','VIT_01s0026g00520','VIT_03s0017g02170','VIT_19s0014g05330',
+              'VIT_02s0154g00130','VIT_02s0025g04330','VIT_13s0067g00490','VIT_09s0002g01200','VIT_14s0030g00140','VIT_03s0063g00120','VIT_05s0029g01480',
+              'VIT_11s0052g01650','VIT_02s0087g01020','VIT_09s0070g00160','VIT_13s0019g02180','VIT_07s0095g00550','VIT_04s0008g06570','VIT_04s0069g00860',
+              'VIT_04s0210g00060','VIT_07s0104g00430','VIT_15s0107g00210','VIT_16s0039g00970','VIT_10s0003g01730','VIT_17s0000g07060','VIT_16s0100g00510',
+              'VIT_02s0154g00590']
+```
+
+We can query the compendium with the list of gene names and get a list of BiologicalFeature objects that represents our genes of interest.
+```{python}
+genes = BiologicalFeature.using(vv_compendium).get(filter={'name_In': gene_names})
+```
+We are now ready to create our first module: the compendium will need the list of genes (BiologicalFeature objects) and the name of the normalization we want to use in order to automatically select the "best" conditions.
+Since the module creation process might take few moments we will read it from a file I previously prepared. I commented the code used to create the module and save it to a local file.
+```{python}
+module_1 = Module.using(vv_compendium).create(biofeatures=genes, normalization='legacy')
+#module_1.write_to_file('module_1.vsp')
+#module_1 = Module.read_from_file('module_1.vsp', conn)
+```
+A module is a matrix that represent a portion of genes and a portion of conditions of the whole compendium. Let's see its values.
+```{python}
+module_1.values
+```
+
+## Get data sources
+Get all (and only) the data sources name (public or private databases) from one Compendium
+
+```{python}
+ds = compendia[0].get_data_sources(fields=['sourceName'])
+```
+
+## Get Samples
+
+Get the first 10 samples from one Compendium as a list of Sample objects
+
+```{python}
+s = Sample.using(compendia[0]).get(filter={'first': 10})
+s
+
+```
+
+```{r}
+py$ds
+#py$s
+```
+
+
+## Get Platforms
+Get the first 2 platforms from one Compendium as a list of Platform objects with only the
+platformAccessId field
+```{python}
+plts = Platform.using(compendia[0]).get(fields=['platformAccessId'], filter={'first': 2})
+plts
+```
+```{r}
+py$plts[1]
+```
+
+Get the platform related to a sample
+
+```{python}
+sp = s[0].platform
+sp
+```
+
+## Get Experiments
+Get the first experiment from one Compendium as a list of Experiment objects
+
+```{python}
+es = Experiment.using(compendia[0]).get(filter={'first': 1})
+es
+```
+
+Get the experiment related to a sample
+
+```{python}
+se = s[0].experiment
+se
+```
+
+
+## Get Ontology
+Get ontologies as list of Ontology objects given a name and retrieve the structure of one as JSON
+
+```{python}
+os = Ontology.using(compendia[0]).get(filter={'name': 'Gene ontology'})
+st = os[0].structure
+```
+
+
+```{r}
+py$st
+```
+
+
+## Get Samples
+Get all samples measuread with a given Platform
+```{python}
+s = Sample.using(compendia[0]).by(platform=plts[0])
+s
+```
+
+
+## Get SampleSet
+Get the first 2 sample sets as list of SampleSet objects or by a given Sample object
+```{python}
+ss = SampleSet.using(compendia[0]).get(filter={'first': 2})
+ss = SampleSet.using(compendia[0]).by(samples=s[:1])
+```
+##Get BiologicalFeature
+Get biological feature as a list of BiologicalFeature objects given a list of names
+
+```{python}
+bf = BiologicalFeature.using(compendia[0]).get(filter={'name_In': ['VIT_00s0332g00160', 'VIT_00s0396g00010', 'VIT_00s0505g00030']})
+bf
+```
+
+## Create Module
+
+```{python}
+'''
+Create a Module object given a list of SampleSet objects
+the BiologicalFeature objects are inferred
+'''
+mod1 = Module.using(compendia[0]).create(samplesets=ss)
+
+'''
+Create a Module object given a list of BiologicalFeature objecst
+the SampleSet objects are inferred
+'''
+mod2 = Module.using(compendia[0]).create(biofeatures=bf)
+
+'''
+Create a Module as union of 2 other modules
+'''
+mod3 = Module.union(mod1, mod2)
+
+'''
+Create a Module as intersection of 2 other modules
+'''
+mod4 = Module.intersection(mod3, mod2)
+
+'''
+Create a Module as difference of 2 other modules
+'''
+mod5 = Module.difference(mod1, mod2)
+```
+
+```{python}
+mod1 = Module.using(compendia[0]).create(samplesets=ss)
+```
+
+```{python}
+mod1
+```
+
+# Plot
+
+```{python}
+from pycompass import Plot
+html = Plot(mod1).plot_heatmap(alternativeColoring=True)
+html
+```

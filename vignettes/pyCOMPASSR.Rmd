@@ -1,0 +1,183 @@
+---
+title: "pyCOMPASSR - An R interface to COMPASS, the gene expression compendia GraphQL endpoint."
+affiliation: https://github.com/onertipaday/pycompassr
+package: pyCOMPASSR
+abstract: > 
+  How to query COMPASS from R
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pyCOMPASSR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteKeywords{Bioinformatics, Gene Expression, data}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+## Install
+
+## 1. Install `python` and `pip`
+
+1.1. Install `python 3` (>= 3.3) ([download page](https://www.python.org/downloads))
+
+1.2. Install `pip` for `python`
+
+1.3. Install `reticulate` for R
+
+```
+install.packages("reticulate")
+```
+
+1.4. Check that `reticulate` can now find `python`. You may have to restart RStudio.
+
+```
+reticulate::py_config()
+```
+
+You will see information about your python configuration, including one or more system paths where python is installed.
+
+1.5. Check that `pip` can be found
+
+```
+system("pip --version")
+```
+
+You will see something like `pip 19.1.1 from /usr/lib/python3.7/site-packages/pip (python 3.7)`
+
+## 2. Install `pyCOMPASS`
+
+2.1. Find the default `python` path that `reticulate` is using
+
+```
+reticulate::py_config()
+```
+
+Take note of the path in the first line (e.g., "/usr/bin/python").
+
+2.2. Find the path that the system `pip` command is using
+
+```
+system("pip --version")
+```
+
+For example, in "pip 19.1.1 from /usr/lib/python3.7/site-packages/pip (python 3.7)" the `python` path is "/usr/lib/python3.7". If the path here does not match the py_config() path, then you may need to manually set the path using `use_python()`.
+
+```
+reticulate::use_python("/usr/lib/python3.7", required = TRUE)
+```
+
+You may have to restart RStudio before setting the path if you have run other `reticulate` operations.
+
+2.3. Install `pycompass` from R
+
+```
+# create a new environment 
+virtualenv_create("pycompassr")
+# install pycompass
+virtualenv_install("pycompassr", "pycompass")
+```
+
+2.3. Install `pyCOMPASS` using `pip`
+
+```
+system("pip install pycompass")
+```
+
+Or alternatively, run this command in the system terminal (`sudo pip install pycompass` for Mac users).
+
+2.4. Check if you can now import pyCOMPASS. You may have to restart RStudio.
+
+```
+pycompass <- reticulate::import("pycompass")
+```
+
+## 3. Install `pyCOMPASSR`
+
+3.1. Finally, you can install `pyCOMPASSR`.
+
+```{r install, eval=FALSE}
+if(!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("onertipaday/pycompassr")
+# remotes::install_github("onertipaday/pyCOMPASSR")
+```
+
+## Getting help
+
+To get help open an issue on the `pyCOMPASSR`
+[github page](https://github.com/onertipaday/pyCOMPASSR/issues).
+
+## The resource
+
+[COMPASS](http://compass.fmach.it/graphql/) GraphQL Endpoint
+[COMPASS documentation](https://compass-.readthedocs.io/en/latest/index.html)
+[pyCOMPASS](https://github.com/marcomoretto/pyCOMPASS)
+
+
+```{r setup}
+library(pyCOMPASSR)
+```
+
+# Case Study
+
+Here we illustrate one of the most common usages of pyCOMPASSR: how to create a module from a set of known genes and automatically selecting condition contrasts. To demonstrate all this we will focus on a set of genes regulated by the phytohormone abscisic acid (ABA) in pre-véraison berries in Vitis vinifera.
+
+## Step 1 - create the initial module
+
+We start by creating a module with these 55 ABA modulated genes and refining it by selecting the most co-expressed genes. The module will be manually split to distinguish different condition contrasts, corresponding to different biological contexts, in which ABA affects gene expression. Finally, we will extend these modules to include other relevant genes by coexpression (which could hint at similar forms of regulation). 
+
+Get the access to _Vitis vinifera_ compendium:
+```{r}
+vv_compendium <- get_compendium(species = 'vitis_vinifera')
+```
+
+```{r}
+aba_genes <- c("VIT_05s0077g00430", "VIT_14s0060g00790", "VIT_14s0066g00810", "VIT_16s0050g00390", "VIT_18s0001g10450", "VIT_11s0016g03180", "VIT_08s0058g00470", "VIT_17s0000g01080", "VIT_06s0004g04860", "VIT_00s0322g00030", "VIT_06s0061g00730", "VIT_07s0005g00140", "VIT_00s0934g00010", "VIT_18s0001g04800", "VIT_01s0011g04820", "VIT_00s0216g00060", "VIT_18s0072g01220", "VIT_15s0048g02870", "VIT_00s0203g00070", "VIT_19s0014g03290", "VIT_01s0026g02710", "VIT_17s0000g08080", "VIT_00s0429g00040", "VIT_00s1206g00010", "VIT_09s0002g03690", "VIT_13s0067g00240", "VIT_07s0104g00350", "VIT_04s0023g02480", "VIT_18s0001g08490", "VIT_13s0019g02110", "VIT_04s0008g01120", "VIT_10s0003g00390", "VIT_03s0017g01410", "VIT_08s0007g08030", "VIT_08s0040g01820", "VIT_08s0058g01260", "VIT_09s0002g00630", "VIT_14s0068g01620", "VIT_18s0001g01030", "VIT_16s0050g01880", "VIT_08s0007g08280", "VIT_09s0002g06790", "VIT_09s0002g00640", "VIT_03s0063g01790", "VIT_04s0044g01230", "VIT_08s0040g02610", "VIT_01s0010g03680", "VIT_01s0137g00780", "VIT_02s0025g00500", "VIT_06s0004g05650", "VIT_07s0005g01080", "VIT_13s0156g00100", "VIT_17s0000g01120", "VIT_18s0001g07840", "VIT_18s0001g09290")
+```
+
+We can query the compendium with the list of gene names and get a list of BiologicalFeature objects that represents our genes of interest.
+```{r}
+genes <- get_bf(compendium = vv_compendium, gene_names = as.list(aba_genes))
+```
+
+We are now ready to create our first module: the compendium will need the list of genes (BiologicalFeature objects) and the name of the normalization we want to use in order to automatically select the "best" conditions.¶
+
+```{r}
+QuickSearch_ABAcoreset <- create_module(compendium = vv_compendium, biofeatures = genes)
+```
+
+
+```{r}
+# my_plot_html <- plot_heatmap(QuickSearch_ABAcoreset)
+# tempDir <- tempfile()
+# dir.create(tempDir)
+# htmlFile <- file.path(tempDir, "plot_heatmap.html")
+# xml2::write_html(my_plot_html,file=htmlFile)
+# rstudioapi::viewer(htmlFile)
+```
+
+use heatmaply directly from R:
+```{r}
+# # plotly::plot_ly(z=mod1$values,type="heatmap")
+# heatmaply::heatmaply_cor(QuickSearch_ABAcoreset$values,
+#               showticklabels = FALSE,
+#               #scale = "row",
+#               xlab = "Sample Sets",
+#               ylab = "Biological Features",
+#               k_col = 5,
+#               k_row = 3#, show_dendrogram=F
+#           )
+```
+
+
+# Session information
+
+```{r si, echo=FALSE}
+print(sessionInfo(), locale = FALSE)
+```

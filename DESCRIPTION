@@ -1,0 +1,23 @@
+Package: pyCOMPASSR
+Title: API to 'Python' Library 'pyCOMPASS'
+Version: 0.0.1
+Authors@R: as.person(c(
+    "Marco Moretto <marco.moretto@fmach.it> [aut, cre]", 
+    "Paolo Sonego <paolo.sonego@fmach.it> [aut]"
+  ))
+URL: https://github.com/onertipaday/pyCOMPASSR
+Maintainer: Paolo Sonego <paolo.sonego@gmail.com>
+Description: Using the R package 'reticulate', this package creates an interface to the 'pyCOMPASS' python library.
+  pyCOMPASS is a Python interface to COMPASS, the gene expression compendia GraphQL endpoint.
+License: GPL-3
+Depends: R (>= 3.5)
+Encoding: UTF-8
+LazyData: true
+Imports: reticulate,
+  xml2
+RoxygenNote: 7.0.2
+SystemRequirements: 'python3' needs to built for the same architecture R is built for (32 or 64 bit).
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
