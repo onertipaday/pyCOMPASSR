@@ -9,9 +9,16 @@ addons:
   apt:
     packages:
       - libxml2-dev
+      - python3-venv
+
+addons:
+  apt:
+    packages:
+      - python3-numpy
+      - python3-venv
 
 before_install:
-  - pip install numpy pycompass
+  - pip3 install pycompass
 
 cran: http://cran.rstudio.com
 
