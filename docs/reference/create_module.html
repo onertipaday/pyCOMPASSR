@@ -117,7 +117,12 @@
     <p>Create a new module</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_module</span>(<span class='no'>compendium</span>, <span class='no'>biofeatures</span>)</pre>
+    <pre class="usage"><span class='fu'>create_module</span>(
+  <span class='no'>compendium</span>,
+  <span class='kw'>biofeatures</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>samplesets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>normalization</span> <span class='kw'>=</span> <span class='st'>"legacy"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -128,13 +133,21 @@
     </tr>
     <tr>
       <th>biofeatures</th>
-      <td><p>a list of &lt;pycompass.biological_feature.BiologicalFeature&gt; objects from get_bf</p></td>
+      <td><p>list of BiologicalFeature objects from get_bf</p></td>
+    </tr>
+    <tr>
+      <th>samplesets</th>
+      <td><p>a list of &lt;samplesets&gt; objects from get_ss</p></td>
+    </tr>
+    <tr>
+      <th>normalization</th>
+      <td><p>the normalization to be used for the inference ('legacy' as default)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a "pycompass.module.Module"</p>
+    <p>a Module object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {

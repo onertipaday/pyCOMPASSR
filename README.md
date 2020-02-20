@@ -1,6 +1,6 @@
 # pyCOMPASSR 
 
-pyCOMPASSR is a R wrapper to the python library pyCOMPASS which allows querying COMPASS (COMpendia Programmatic Access Support Software) a software layer that provides a GraphQL endpoint to query compendia built using COMMAND>_ technology.
+pyCOMPASSR is a R wrapper to the python library pyCOMPASS which allows querying COMPASS (COMpendia Programmatic Access Support Software) a software layer that provides a GraphQL endpoint to query compendia built using [COMMAND>_](#citation) [![doi](https://img.shields.io/badge/doi-10.1371%2Fjournal.pone.0163962-blue.svg?style=flat)](https://doi.org/10.1186/s12859-019-2643-6) technology.
 
 ## Build Status
 
@@ -132,10 +132,12 @@ htmlFile <- file.path(tempDir, "plot_heatmap.html")
 write_html(my_plot_html,file=htmlFile)
 rstudioapi::viewer(htmlFile)
 ```
-# Package maintainers / authors
 
-pyCOMPASS is written and mantained by [MarcoMoretto](https://github.com/marcomoretto/pyCOMPASS).
+## Citation
 
-pyCOMPASSR is written and maintained by [Paolo Sonego](https://github.com/onertipaday/pyCOMPASSR) <a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&logo=twitter" alt="follow on Twitter"></a>.
+Moretto, M., Sonego, P., Villaseñor-Altamirano, A.B. et al. First step toward gene expression data integration: transcriptomic data acquisition with COMMAND>_. BMC Bioinformatics 20, 54 (2019). [doi:10.1186/s12859-019-2643-6](https://doi.org/10.1186/s12859-019-2643-6).
 
+## Package maintainers / authors
 
+- pyCOMPASS is written and mantained by [MarcoMoretto](https://github.com/marcomoretto/pyCOMPASS).
+- pyCOMPASSR is written and maintained by [Paolo Sonego](https://github.com/onertipaday/pyCOMPASSR) <a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&logo=twitter" alt="follow on Twitter"></a>.

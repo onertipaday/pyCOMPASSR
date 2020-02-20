@@ -74,7 +74,7 @@
 <div id="pycompassr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#pycompassr" class="anchor"></a>pyCOMPASSR</h1></div>
-<p>pyCOMPASSR is a R wrapper to the python library pyCOMPASS which allows querying COMPASS (COMpendia Programmatic Access Support Software) a software layer that provides a GraphQL endpoint to query compendia built using COMMAND&gt;_ technology.</p>
+<p>pyCOMPASSR is a R wrapper to the python library pyCOMPASS which allows querying COMPASS (COMpendia Programmatic Access Support Software) a software layer that provides a GraphQL endpoint to query compendia built using <a href="#citation">COMMAND&gt;_</a> <a href="https://doi.org/10.1186/s12859-019-2643-6"><img src="https://img.shields.io/badge/doi-10.1371%2Fjournal.pone.0163962-blue.svg?style=flat" alt="doi"></a> technology.</p>
 <div id="build-status" class="section level2">
 <h2 class="hasAnchor">
 <a href="#build-status" class="anchor"></a>Build Status</h2>
@@ -154,12 +154,19 @@ dir.create(tempDir)
 htmlFile &lt;- file.path(tempDir, "plot_heatmap.html")
 write_html(my_plot_html,file=htmlFile)
 rstudioapi::viewer(htmlFile)</code></pre>
+<div id="citation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citation" class="anchor"></a>Citation</h2>
+<p>Moretto, M., Sonego, P., Villaseñor-Altamirano, A.B. et al. First step toward gene expression data integration: transcriptomic data acquisition with COMMAND&gt;_. BMC Bioinformatics 20, 54 (2019). <a href="https://doi.org/10.1186/s12859-019-2643-6">doi:10.1186/s12859-019-2643-6</a>.</p>
 </div>
-<div id="package-maintainers--authors" class="section level1">
-<h1 class="hasAnchor">
-<a href="#package-maintainers--authors" class="anchor"></a>Package maintainers / authors</h1>
-<p>pyCOMPASS is written and mantained by <a href="https://github.com/marcomoretto/pyCOMPASS">MarcoMoretto</a>.</p>
-<p>pyCOMPASSR is written and maintained by <a href="https://github.com/onertipaday/pyCOMPASSR">Paolo Sonego</a> <a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&amp;logo=twitter" alt="follow on Twitter"></a>.</p>
+<div id="package-maintainers--authors" class="section level2">
+<h2 class="hasAnchor">
+<a href="#package-maintainers--authors" class="anchor"></a>Package maintainers / authors</h2>
+<ul>
+<li>pyCOMPASS is written and mantained by <a href="https://github.com/marcomoretto/pyCOMPASS">MarcoMoretto</a>.</li>
+<li>pyCOMPASSR is written and maintained by <a href="https://github.com/onertipaday/pyCOMPASSR">Paolo Sonego</a> <a href="https://twitter.com/intent/follow?screen_name=onertipaday"><img src="https://img.shields.io/twitter/follow/onertipaday?style=social&amp;logo=twitter" alt="follow on Twitter"></a>.</li>
+</ul>
+</div>
 </div>
 
   </div>

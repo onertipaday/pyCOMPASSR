@@ -4,15 +4,24 @@
 \alias{create_module}
 \title{Create a new module}
 \usage{
-create_module(compendium, biofeatures)
+create_module(
+  compendium,
+  biofeatures = NULL,
+  samplesets = NULL,
+  normalization = "legacy"
+)
 }
 \arguments{
 \item{compendium}{the compendium selected for the analysis}
 
-\item{biofeatures}{a list of <pycompass.biological_feature.BiologicalFeature> objects from get_bf}
+\item{biofeatures}{list of BiologicalFeature objects from get_bf}
+
+\item{samplesets}{a list of <samplesets> objects from get_ss}
+
+\item{normalization}{the normalization to be used for the inference ('legacy' as default)}
 }
 \value{
-a "pycompass.module.Module"
+a Module object
 }
 \description{
 Create a new module

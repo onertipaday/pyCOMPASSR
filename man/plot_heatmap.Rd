@@ -7,7 +7,7 @@
 plot_heatmap(module)
 }
 \arguments{
-\item{module}{a "pycompass.module.Module"}
+\item{module}{a Module object}
 }
 \value{
 a "xml_document"

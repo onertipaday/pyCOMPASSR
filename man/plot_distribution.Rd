@@ -4,10 +4,17 @@
 \alias{plot_distribution}
 \title{Get the HTML or JSON code that plot module distributions}
 \usage{
-plot_distribution(module)
+plot_distribution(
+  module,
+  plot_type = "biological_features_standard_deviation_distribution"
+)
 }
 \arguments{
-\item{module}{a "pycompass.module.Module"}
+\item{module}{a Module object}
+
+\item{plot_type}{type of plot, select from:
+- 'biological_features_standard_deviation_distribution' (default)
+- 'sample_sets_magnitude_distribution'}
 }
 \value{
 a "xml_document"

@@ -9,7 +9,7 @@ rank_genes(compendium = get_compendium(), module, rank_method = "std")
 \arguments{
 \item{compendium}{the compendium selected for the analysis}
 
-\item{module}{a "pycompass.module.Module"}
+\item{module}{a Module object}
 
 \item{rank_method}{ranking method (default 'std')}
 }

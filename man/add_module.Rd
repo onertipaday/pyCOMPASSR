@@ -9,12 +9,12 @@ add_module(compendium, module, new_genes)
 \arguments{
 \item{compendium}{the compendium selected for the analysis}
 
-\item{module}{a "pycompass.module.Module"}
+\item{module}{a Module object}
 
 \item{new_genes}{a list of gene_names}
 }
 \value{
-a "pycompass.module.Module"
+a Module object
 }
 \description{
 Add biological feature to the module

@@ -48,7 +48,7 @@ get_data_sources <- function(compendium = get_compendium()){
 #' Rank all biological features on the module’s sample set using rank_method
 #'
 #' @param compendium the compendium selected for the analysis
-#' @param module a "pycompass.module.Module"
+#' @param module a Module object
 #' @param rank_method ranking method (default 'std')
 #'
 #' @return a data.frame
@@ -68,7 +68,7 @@ rank_genes <- function(compendium = get_compendium(), module, rank_method = "std
 #' @param compendium the compendium selected for the analysis
 #' @param gene_names a vector of gene_ids
 #'
-#' @return a list of <pycompass.biological_feature.BiologicalFeature> objects
+#' @return list of BiologicalFeature objects
 #' @export
 #'
 #' @examples
@@ -83,12 +83,54 @@ get_bf <- function(compendium, gene_names){
   #junk=.pycompass$BiologicalFeature$using(vv_compendium)$get(filter = )
 }
 
+#' Create a new module providing biological featurers (genes)
+#'
+#' @param compendium the compendium selected for the analysis
+#' @param biofeatures list of BiologicalFeature objects from get_bf
+#' @param normalization  the normalization to be used for the inference ('legacy' as default)
+#'
+#' @return a Module object
+#' @export
+create_module_bf<- function(compendium, biofeatures, normalization = 'legacy'){
+  reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
+  create_module_bf(compendium, biofeatures, normalization='legacy')
+}
+
+
+#' Create a new module providing Sample sets
+#'
+#' @param compendium the compendium selected for the analysis
+#' @param samplesets a list of <samplesets> objects from get_ss
+#' @param normalization  the normalization to be used for the inference ('legacy' as default)
+#'
+#'
+#' @return a Module object
+#' @export
+create_module_ss<- function(compendium, samplesets, normalization='legacy'){
+  reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
+  create_module_ss(compendium, samplesets, normalization='legacy')
+}
+
+#' Create a new module joining two modules
+#'
+#' @param module_1  a Module object
+#' @param module_2  a Module object
+#'
+#' @return a Module object
+#' @export
+join_modules <- function(module_1, module_2){
+  reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
+  join_modules(module_1, module_2)
+}
+
 #' Create a new module
 #'
 #' @param compendium the compendium selected for the analysis
-#' @param biofeatures a list of <pycompass.biological_feature.BiologicalFeature> objects from get_bf
+#' @param biofeatures list of BiologicalFeature objects from get_bf
+#' @param samplesets a list of <samplesets> objects from get_ss
+#' @param normalization  the normalization to be used for the inference ('legacy' as default)
 #'
-#' @return a "pycompass.module.Module"
+#' @return a Module object
 #' @export
 #'
 #' @examples
@@ -97,31 +139,41 @@ get_bf <- function(compendium, gene_names){
 #' genes <- get_bf(compendium = get_compendium(), gene_names = as.list(gene_names))
 #' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' }
-create_module <- function(compendium, biofeatures){
-  reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
-  my_module <- create_module(compendium, biofeatures)
-  return(my_module)
-  # return(my_module$values)
+create_module <- function(compendium, biofeatures = NULL, samplesets = NULL, normalization = 'legacy'){
+  #reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
+  if(is.null(biofeatures) & is.null(samplesets)) stop("You need to provide at least a biofeatures object or samplesets object")
+    else if (is.null(biofeatures)){
+      out <- create_module_ss(compendium, samplesets, normalization)
+    }
+    else if (is.null(samplesets)){
+      out <- create_module_bf(compendium, biofeatures, normalization)
+    }
+    else{
+      mod1 <- create_module_ss(compendium, samplesets, normalization)
+      mod2 <- create_module_bf(compendium, biofeatures, normalization)
+      out <- join_modules(mod1, mod2)
+    }
+    out
 }
 
 #' Add biological feature to the module
 #'
 #' @param compendium the compendium selected for the analysis
-#' @param module a "pycompass.module.Module"
+#' @param module a Module object
 #' @param new_genes a list of gene_names
 #'
-#' @return a "pycompass.module.Module"
+#' @return a Module object
 #' @export
-#'
-#' @examples
 add_module <- function(compendium, module, new_genes){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
   return(add_module(compendium, module, new_genes))
 }
+# -----------------------------------------------------------------------------
+# Plot functions
 
 #' Get the HTML or JSON code that plot module heatmaps
 #'
-#' @param module a "pycompass.module.Module"
+#' @param module a Module object
 #'
 #' @return a "xml_document"
 #' @export
@@ -142,7 +194,11 @@ plot_heatmap <- function(module){
 
 #' Get the HTML or JSON code that plot module distributions
 #'
-#' @param module a "pycompass.module.Module"
+#' @param module a Module object
+#' @param plot_type type of plot, select from:
+#'  - 'biological_features_standard_deviation_distribution' (default)
+#'  - 'sample_sets_magnitude_distribution'
+#'
 #'
 #' @return a "xml_document"
 #' @export
@@ -154,15 +210,15 @@ plot_heatmap <- function(module){
 #' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' my_plot_dist <- plot_distribution(mod1)
 #' }
-plot_distribution <- function(module){
+plot_distribution <- function(module, plot_type='biological_features_standard_deviation_distribution'){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
-  return(xml2::read_html(plot_distribution(module)))
+  return(xml2::read_html(plot_distribution(module, plot_type)))
 }
 
 
 #' Get the HTML or JSON code that plot the module networks
 #'
-#' @param module a "pycompass.module.Module"
+#' @param module a Module object
 #'
 #' @return  a "xml_document"
 #' @export

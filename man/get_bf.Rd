@@ -12,7 +12,7 @@ get_bf(compendium, gene_names)
 \item{gene_names}{a vector of gene_ids}
 }
 \value{
-a list of <pycompass.biological_feature.BiologicalFeature> objects
+list of BiologicalFeature objects
 }
 \description{
 Get biological feature

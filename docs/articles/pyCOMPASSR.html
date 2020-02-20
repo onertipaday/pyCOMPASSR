@@ -165,22 +165,28 @@ virtualenv_install("pycompassr", "pycompass")</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">genes &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_bf.html">get_bf</a></span>(<span class="dt">compendium =</span> vv_compendium, <span class="dt">gene_names =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(aba_genes))</a></code></pre></div>
 <p>We are now ready to create our first module: the compendium will need the list of genes (BiologicalFeature objects) and the name of the normalization we want to use in order to automatically select the “best” conditions.¶</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">QuickSearch_ABAcoreset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_module.html">create_module</a></span>(<span class="dt">compendium =</span> vv_compendium, <span class="dt">biofeatures =</span> genes)</a></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co"># my_plot_html &lt;- plot_heatmap(QuickSearch_ABAcoreset)</span></a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co"># my_plot_dist &lt;- plot_distribution(QuickSearch_ABAcoreset)</span></a>
 <a class="sourceLine" id="cb16-2" title="2"><span class="co"># tempDir &lt;- tempfile()</span></a>
 <a class="sourceLine" id="cb16-3" title="3"><span class="co"># dir.create(tempDir)</span></a>
-<a class="sourceLine" id="cb16-4" title="4"><span class="co"># htmlFile &lt;- file.path(tempDir, "plot_heatmap.html")</span></a>
-<a class="sourceLine" id="cb16-5" title="5"><span class="co"># xml2::write_html(my_plot_html,file=htmlFile)</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="co"># htmlFile &lt;- file.path(tempDir, "test.html")</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="co"># xml2::write_html(my_plot_dist,file=htmlFile)</span></a>
 <a class="sourceLine" id="cb16-6" title="6"><span class="co"># rstudioapi::viewer(htmlFile)</span></a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># my_plot_html &lt;- plot_heatmap(QuickSearch_ABAcoreset)</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="co"># tempDir &lt;- tempfile()</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="co"># dir.create(tempDir)</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="co"># htmlFile &lt;- file.path(tempDir, "plot_heatmap.html")</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="co"># xml2::write_html(my_plot_html,file=htmlFile)</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="co"># rstudioapi::viewer(htmlFile)</span></a></code></pre></div>
 <p>use heatmaply directly from R:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># # plotly::plot_ly(z=mod1$values,type="heatmap")</span></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="co"># heatmaply::heatmaply_cor(QuickSearch_ABAcoreset$values,</span></a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="co">#               showticklabels = FALSE,</span></a>
-<a class="sourceLine" id="cb17-4" title="4"><span class="co">#               #scale = "row",</span></a>
-<a class="sourceLine" id="cb17-5" title="5"><span class="co">#               xlab = "Sample Sets",</span></a>
-<a class="sourceLine" id="cb17-6" title="6"><span class="co">#               ylab = "Biological Features",</span></a>
-<a class="sourceLine" id="cb17-7" title="7"><span class="co">#               k_col = 5,</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="co">#               k_row = 3#, show_dendrogram=F</span></a>
-<a class="sourceLine" id="cb17-9" title="9"><span class="co">#           )</span></a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># # plotly::plot_ly(z=mod1$values,type="heatmap")</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="co"># heatmaply::heatmaply_cor(QuickSearch_ABAcoreset$values,</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="co">#               showticklabels = FALSE,</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="co">#               #scale = "row",</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="co">#               xlab = "Sample Sets",</span></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="co">#               ylab = "Biological Features",</span></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="co">#               k_col = 5,</span></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="co">#               k_row = 3#, show_dendrogram=F</span></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="co">#           )</span></a></code></pre></div>
 </div>
 </div>
 <div id="session-information" class="section level1">

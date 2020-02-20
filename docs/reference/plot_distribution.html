@@ -117,14 +117,23 @@
     <p>Get the HTML or JSON code that plot module distributions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_distribution</span>(<span class='no'>module</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_distribution</span>(
+  <span class='no'>module</span>,
+  <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"biological_features_standard_deviation_distribution"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>module</th>
-      <td><p>a "pycompass.module.Module"</p></td>
+      <td><p>a Module object</p></td>
+    </tr>
+    <tr>
+      <th>plot_type</th>
+      <td><p>type of plot, select from:
+- 'biological_features_standard_deviation_distribution' (default)
+- 'sample_sets_magnitude_distribution'</p></td>
     </tr>
     </table>
 

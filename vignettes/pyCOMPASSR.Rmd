@@ -152,6 +152,15 @@ We are now ready to create our first module: the compendium will need the list o
 QuickSearch_ABAcoreset <- create_module(compendium = vv_compendium, biofeatures = genes)
 ```
 
+```{r}
+# my_plot_dist <- plot_distribution(QuickSearch_ABAcoreset)
+# tempDir <- tempfile()
+# dir.create(tempDir)
+# htmlFile <- file.path(tempDir, "test.html")
+# xml2::write_html(my_plot_dist,file=htmlFile)
+# rstudioapi::viewer(htmlFile)
+```
+
 
 ```{r}
 # my_plot_html <- plot_heatmap(QuickSearch_ABAcoreset)
