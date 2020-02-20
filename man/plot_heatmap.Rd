@@ -4,10 +4,14 @@
 \alias{plot_heatmap}
 \title{Get the HTML or JSON code that plot module heatmaps}
 \usage{
-plot_heatmap(module)
+plot_heatmap(module, output_format = "html", alternativeColoring = TRUE)
 }
 \arguments{
 \item{module}{a Module object}
+
+\item{output_format}{a string: either 'html' (default) or 'json'}
+
+\item{alternativeColoring}{alternative color blind friendly palette (default 'TRUE')}
 }
 \value{
 a "xml_document"

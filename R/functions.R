@@ -174,6 +174,8 @@ add_module <- function(compendium, module, new_genes){
 #' Get the HTML or JSON code that plot module heatmaps
 #'
 #' @param module a Module object
+#' @param output_format a string: either 'html' (default) or 'json'
+#' @param alternativeColoring alternative color blind friendly palette (default 'TRUE')
 #'
 #' @return a "xml_document"
 #' @export
@@ -185,9 +187,9 @@ add_module <- function(compendium, module, new_genes){
 #' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' my_html <- plot_heatmap(mod1)
 #' }
-plot_heatmap <- function(module){
+plot_heatmap <- function(module, output_format='html', alternativeColoring=TRUE){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
-  return(xml2::read_html(plot_heatmap(module)))
+  return(xml2::read_html(plot_heatmap(module, output_format, alternativeColoring)))
   # write_html(tmp,file="test.html")
   # return(plot_heatmap(module))
 }
@@ -199,6 +201,7 @@ plot_heatmap <- function(module){
 #'  - 'biological_features_standard_deviation_distribution' (default)
 #'  - 'sample_sets_magnitude_distribution'
 #'
+#' @param output_format a string: either 'html' (default) or 'json'
 #'
 #' @return a "xml_document"
 #' @export
@@ -210,15 +213,16 @@ plot_heatmap <- function(module){
 #' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' my_plot_dist <- plot_distribution(mod1)
 #' }
-plot_distribution <- function(module, plot_type='biological_features_standard_deviation_distribution'){
+plot_distribution <- function(module, output_format='html', plot_type='biological_features_standard_deviation_distribution'){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
-  return(xml2::read_html(plot_distribution(module, plot_type)))
+  return(xml2::read_html(plot_distribution(module, output_format, plot_type)))
 }
 
 
 #' Get the HTML or JSON code that plot the module networks
 #'
 #' @param module a Module object
+#' @param output_format a string: either 'html' (default) or 'json'
 #'
 #' @return  a "xml_document"
 #' @export
@@ -230,9 +234,9 @@ plot_distribution <- function(module, plot_type='biological_features_standard_de
 #' mod1 <- create_module(compendium = get_compendium, biofeatures = genes)
 #' my_plot_net <- plot_network(mod1)
 #' }
-plot_network <- function(module){
+plot_network <- function(module, output_format='html'){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
-  return(xml2::read_html(plot_network(module)))
+  return(xml2::read_html(plot_network(module, output_format)))
 }
 
 

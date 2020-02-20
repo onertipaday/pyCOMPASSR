@@ -4,10 +4,12 @@
 \alias{plot_network}
 \title{Get the HTML or JSON code that plot the module networks}
 \usage{
-plot_network(module)
+plot_network(module, output_format = "html")
 }
 \arguments{
 \item{module}{a Module object}
+
+\item{output_format}{a string: either 'html' (default) or 'json'}
 }
 \value{
 a "xml_document"

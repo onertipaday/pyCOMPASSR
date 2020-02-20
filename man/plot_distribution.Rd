@@ -6,11 +6,14 @@
 \usage{
 plot_distribution(
   module,
+  output_format = "html",
   plot_type = "biological_features_standard_deviation_distribution"
 )
 }
 \arguments{
 \item{module}{a Module object}
+
+\item{output_format}{a string: either 'html' (default) or 'json'}
 
 \item{plot_type}{type of plot, select from:
 - 'biological_features_standard_deviation_distribution' (default)
