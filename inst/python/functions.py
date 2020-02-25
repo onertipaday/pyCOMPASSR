@@ -1,10 +1,14 @@
 from pycompass import BiologicalFeature, SampleSet, Ontology, Experiment, Platform, Module, Plot
 
+
+def get_platform_info(compendium):
+  return Platform.using(compendium).get(fields=['platformAccessId'], filter={'first': 2})
+
 def get_bf(compendium, gene_names):
   return BiologicalFeature.using(compendium).get(filter={'name_In': gene_names})
 
 def get_ss(compendium, sample_names):
-  return SampleSets.using(compendium).get(filter={'name_In': sample_names})
+  return SampleSet.using(compendium).get(filter={'name_In': sample_names})
 
 def create_module_bf(compendium, biofeatures, normalization='legacy'):
   return Module.using(compendium).create(biofeatures, normalization=normalization)

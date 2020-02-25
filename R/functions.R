@@ -79,10 +79,26 @@ rank_genes <- function(compendium = get_compendium(), module, rank_method = "std
 get_bf <- function(compendium, gene_names){
   reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
   return(get_bf(compendium = compendium, gene_names = as.list(gene_names)))
-  #BiologicalFeature.using(vv_compendium).get(filter={'name_In': gene_names})
-  #junk=.pycompass$BiologicalFeature$using(vv_compendium)$get(filter = )
 }
 
+
+#' Get sample set
+#'
+#' @param compendium the compendium selected for the analysis
+#' @param sample_names a vector of samples ids
+#'
+#' @return list of SampleSets objects
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' set_01=c("GSM786264.ch1-vs-GSM786258.ch1","E-MTAB-1514.US_03_3.ch1-vs-E-MTAB-1514.US_03_1.ch1")
+#' get_ss(compendium = get_compendium(), sample_names = set_01)
+#' }
+get_ss <- function(compendium, sample_names){
+  reticulate::source_python(system.file("python", "functions.py", package = "pyCOMPASSR"))
+  return(get_ss(compendium = compendium, sample_names = as.list(sample_names)))
+}
 #' Create a new module providing biological featurers (genes)
 #'
 #' @param compendium the compendium selected for the analysis
